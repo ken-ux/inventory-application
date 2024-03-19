@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to the #[em Fishbowl], an inventory application that helps keep track of fish in-stock for our (imaginary) internal teams.
+
+  h1 Inventory Summary
+
+  p Our inventory has the following record counts:
+  ul 
+    li #[strong Categories]: !{category_count}
+    li #[strong Item Types]: !{item_count}

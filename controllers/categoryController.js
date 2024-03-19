@@ -1,9 +1,20 @@
 const Category = require("../models/category");
+const Item = require("../models/item");
 const asyncHandler = require("express-async-handler");
 
 // Display the site welcome page.
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Site Home Page");
+  // Get details of categories and items (in parallel)
+  const [numCategories, numItems] = await Promise.all([
+    Category.countDocuments({}).exec(),
+    Item.countDocuments({}).exec(),
+  ]);
+
+  res.render("index", {
+    title: "Fishbowl Home",
+    category_count: numCategories,
+    item_count: numItems,
+  });
 });
 
 // Display list of all Categories.

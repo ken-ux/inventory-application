@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  p #[strong Description]: #{item.description}
+  p #[strong Habitat]:&nbsp;
+    each category, index in item.category
+        a(href=category.url) #{category.name}
+        if index < item.category.length - 1
+            |,&nbsp;
+  p #[strong Unit Price]: $#{item.unit_price}
+  p #[strong Stock]: #{item.stock}

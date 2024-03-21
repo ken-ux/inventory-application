@@ -1,13 +1,12 @@
 extends layout
 
 block content
+  h1 #{ title }: #{ item.name }
+  p #[strong Description]: #{ item.description }
 
-  h1 #{title}: #{item.name}
-  p #[strong Description]: #{item.description}
-  
   p Do you really want to delete this Item?
-    form(method='POST')
-        div.form-group
-            input#itemid(type='hidden', name='itemid', value=item._id )
+    form(method="POST")
+      .form-group
+        input#itemid(type="hidden", name="itemid", value=item._id)
 
-        button(type='submit') Delete
+      button(type="submit") Delete

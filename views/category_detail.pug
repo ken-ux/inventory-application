@@ -3,19 +3,19 @@ extends layout
 block content
   h1= title
 
-  p #[strong Description]: #{category.description}
+  p #[strong Description]: #{ category.description }
 
   div
     h2 Items in this Category
 
     each item in items
       hr
-      a(href=item.url) #{item.name}
-      p #[strong Description:] #{item.description}
+      a(href=item.url) #{ item.name }
+      p #[strong Description:] #{ item.description }
 
     else
       p There are no items in this category.
-  
+
   hr
   p
-    a(href=category.url+"/delete") Delete Category
+    a(href=category.url + "/delete") Delete Category

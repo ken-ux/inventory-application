@@ -49,6 +49,7 @@ exports.item_create_post = [
     .trim()
     .isArray({ min: 1 })
     .escape(),
+  body("category.*").escape(),
   body("unit_price")
     .trim()
     .isLength({ min: 1 })

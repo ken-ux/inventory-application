@@ -80,7 +80,7 @@ exports.category_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("category_form", {
-        title: "Create Genre",
+        title: "Create Category",
         category: category,
         errors: errors.array(),
       });
@@ -96,7 +96,7 @@ exports.category_create_post = [
         res.redirect(categoryExists.url);
       } else {
         await category.save();
-        // New genre saved. Redirect to genre detail page.
+        // New category saved. Redirect to category detail page.
         res.redirect(category.url);
       }
     }

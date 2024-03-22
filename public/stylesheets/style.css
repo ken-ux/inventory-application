@@ -53,6 +53,10 @@ main {
   backdrop-filter: blur(100px);
 }
 
+main .subtitle {
+  margin-top: 3rem;
+}
+
 .categories {
   display: grid;
   gap: 1rem;
@@ -111,7 +115,8 @@ label {
   width: 100px;
 }
 
-input, textarea {
+input,
+textarea {
   padding: 6px 12px;
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 8px;

@@ -2,11 +2,14 @@ extends layout
 
 block content
   h1= title
-  p Welcome to the #[em Fishbowl], an inventory application that helps keep track of fish in-stock for our (imaginary) internal teams.
+  p The #[em Fishbowl] is an inventory application that helps keep track of in-stock item for our (imaginary) internal team.
+  p Start by&nbsp;
+    a(href="catalog/categories") viewing all the categories
+    | &nbsp;that our items are organized into. From there, you can view any item and update its information!
 
-  h1 Inventory Summary
+  h1.subtitle Inventory Summary
 
   p Our inventory has the following record counts:
   ul
     li #[strong Categories]: !{ category_count }
-    li #[strong Item Types]: !{ item_count }
+    li #[strong Items]: !{ item_count }

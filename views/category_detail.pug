@@ -8,16 +8,18 @@ block content
   div
     h2 Items in this Category
 
-    each item in items
-      hr
-      a(href=item.url) #{ item.name }
-      p #[strong Description:] #{ item.description }
+    if items.length > 0
+      .items
+        each item in items
+          .item-detail
+            p #[strong Species]: #{ item.name }
+            p #[strong Description:] #{ item.description }
+            a(href=item.url) View more details
 
     else
       p There are no items in this category.
 
-  hr
-  p
-    a(href=category.url + "/delete") Delete Category
   p
     a(href=category.url + "/update") Update Category
+  p
+    a(href=category.url + "/delete") Delete Category

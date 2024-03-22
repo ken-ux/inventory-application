@@ -121,4 +121,14 @@ input, textarea {
 
 form button {
   align-self: start;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  background-color: white;
+  transition: background-color 0.2s linear;
+}
+
+form button:hover {
+  background-color: lightgrey;
+  cursor: pointer;
 }

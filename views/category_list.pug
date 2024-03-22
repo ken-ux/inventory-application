@@ -3,11 +3,13 @@ extends layout
 block content
   h1= title
   if category_list.length
-    ul
+    .categories
       each category in category_list
-        li
-          a(href=category.url) #{ category.name }
-          | : #{ category.description }
+        .category
+          a(href=category.url)
+            div
+              h2= category.name
+              p= category.description
 
   else
     p There are no categories.

@@ -91,6 +91,7 @@ exports.item_create_post = [
           category.checked = "true";
         }
       }
+
       res.render("item_form", {
         title: "Create Item",
         categories: allCategories,
@@ -119,10 +120,108 @@ exports.item_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Item update form on GET.
 exports.item_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Item update GET");
+  const [item, allCategories] = await Promise.all([
+    Item.findById(req.params.id).exec(),
+    Category.find().sort({ name: 1 }).exec(),
+  ]);
+
+  if (item === null) {
+    // No results.
+    const err = new Error("Item not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  // Mark our selected categories as checked.
+  for (const category of allCategories) {
+    if (item.category.includes(category._id)) {
+      category.checked = "true";
+    }
+  }
+
+  res.render("item_form", {
+    title: "Update Item",
+    item: item,
+    categories: allCategories,
+  });
 });
 
 // Handle Item update on POST.
-exports.item_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Item update POST");
-});
+exports.item_update_post = [
+  // Convert the categories to an array.
+  (req, res, next) => {
+    if (!Array.isArray(req.body.category)) {
+      req.body.category =
+        typeof req.body.category === "undefined" ? [] : [req.body.category];
+    }
+    next();
+  },
+
+  // Validate and sanitize fields.
+  body("name", "Name must not be empty.").trim().isLength({ min: 1 }).escape(),
+  body("description", "Description must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("category", "Must choose at least one category.")
+    .trim()
+    .isArray({ min: 1 })
+    .escape(),
+  body("category.*").escape(),
+  body("unit_price")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Unit price must not be empty.")
+    .isNumeric()
+    .withMessage("Unit price contains non-numeric characters."),
+  body("stock")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Stock must not be empty. If the stock is 0, write '0'.")
+    .isNumeric()
+    .withMessage("Unit price contains non-numeric characters."),
+  // Process request after validation and sanitization.
+
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create an Item object with escaped and trimmed data.
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      unit_price: req.body.unit_price,
+      stock: req.body.stock,
+      _id: req.params.id, // This is required, else a new ID would be assigned
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all categories for form.
+      const allCategories = await Category.find().sort({ name: 1 }).exec();
+
+      // Mark our selected categories as checked.
+      for (const category of allCategories) {
+        if (item.category.includes(category._id)) {
+          category.checked = "true";
+        }
+      }
+
+      res.render("item_form", {
+        title: "Update Item",
+        categories: allCategories,
+        item: item,
+        errors: errors.array(),
+      });
+    } else {
+      // Data from form is valid. Update the item.
+      const updatedItem = await Item.findByIdAndUpdate(req.params.id, item, {});
+      // Redirect to item detail page.
+      res.redirect(updatedItem.url);
+    }
+  }),
+];

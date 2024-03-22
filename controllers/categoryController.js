@@ -181,7 +181,7 @@ exports.category_update_post = [
     const category = new Category({
       name: req.body.name,
       description: req.body.description,
-      _id: req.params.id, // This is required, or a new ID will be assigned
+      _id: req.params.id, // This is required, else a new ID would be assigned
     });
 
     if (!errors.isEmpty()) {
